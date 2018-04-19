@@ -18,6 +18,8 @@ class MessageComponent extends Component {
       toggleSelect(message)
     }
 
+    const labels = message.labels.map(label => <span className="label label-warning">{label}</span>)
+
     // let readClass = classNames({
     //   row: true,
     //   message: true,
@@ -56,6 +58,7 @@ class MessageComponent extends Component {
     </div>
   </div>
   <div className="col-xs-11">
+    {labels}
     <a href=".">{message.subject}</a>
   </div>
 </div>

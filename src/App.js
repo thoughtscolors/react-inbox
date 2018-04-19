@@ -77,11 +77,7 @@ sendMessage = async () => {
 deleteMessage = async () => {
   const selected = this.state.messages.filter(message => message.selected)
   const messageIds = selected.map(message => message.id)
-  console.log(selected);
-  console.log(messageIds);
-  const fff = this.state.messages.filter(message => message.selected).map(message => message.id)
 
-    console.log('fff', fff);
   await fetch('http://localhost:8082/api/messages',
     {
       method: 'PATCH',
@@ -116,6 +112,50 @@ toggleSelectAll = () => {
   })
 }
 
+addLabel = async () => {
+  const label = document.querySelector('.add-label').value
+  const selected = this.state.messages.filter(message => message.selected)
+  const messageIds = selected.map(message => message.id)
+  console.log(messageIds, label);
+  await fetch('http://localhost:8082/api/messages',
+    {
+      method: 'PATCH',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+      },
+    body: JSON.stringify({
+      messageIds,
+      command: "addLabel",
+      label,
+    })
+  })
+  .then(response => this.updateMessages()
+  )
+}
+
+removeLabel = async () => {
+  const label = document.querySelector('.remove-label').value
+  const selected = this.state.messages.filter(message => message.selected)
+  const messageIds = selected.map(message => message.id)
+  console.log(messageIds, label);
+  await fetch('http://localhost:8082/api/messages',
+    {
+      method: 'PATCH',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+      },
+    body: JSON.stringify({
+      messageIds,
+      label,
+      command: "removeLabel"
+    })
+  })
+  .then(response => this.updateMessages()
+  )
+}
+
   render() {
     return (
     <div>
@@ -145,6 +185,8 @@ toggleSelectAll = () => {
           toggleReadStatus={this.toggleReadStatus}
           showCompose={this.showCompose}
           deleteMessage={this.deleteMessage}
+          addLabel={this.addLabel}
+          removeLabel={this.removeLabel}
          />
          {this.state.showComposeForm ? <Compose sendMessage={this.sendMessage}/> : null}
          {this.state.showMessages ?

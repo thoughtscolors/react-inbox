@@ -3,9 +3,9 @@ import React, {Component} from 'react'
 class ToolbarComponent extends Component {
 
   render() {
-    const {messages, toggleSelectAll, toggleReadStatus, showCompose, deleteMessage } = this.props
+    const {messages, toggleSelectAll, toggleReadStatus, showCompose, deleteMessage, addLabel, removeLabel } = this.props
 
-    let unreadCount = 0;
+    let unreadCount = messages.filter(message => message.read === false).length;
     const selectedCount = messages.filter(message => message.selected).length
     let selectAllClass
 
@@ -44,14 +44,14 @@ class ToolbarComponent extends Component {
           Mark As Unread
         </button>
 
-        <select className="form-control label-select" disabled="disabled">
+        <select className="form-control label-select add-label" disabled={selectedCount === 0} onChange={addLabel}>
           <option>Apply label</option>
           <option value="dev">dev</option>
           <option value="personal">personal</option>
           <option value="gschool">gschool</option>
         </select>
 
-        <select className="form-control label-select" disabled="disabled">
+        <select className="form-control label-select remove-label" disabled={selectedCount === 0} onChange={removeLabel}>
           <option>Remove label</option>
           <option value="dev">dev</option>
           <option value="personal">personal</option>
